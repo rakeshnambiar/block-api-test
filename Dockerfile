@@ -32,6 +32,12 @@ RUN curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.s
     /usr/local/miniconda/bin/conda init && \
     /usr/local/miniconda/bin/conda install -y conda
 
+# Set environment variables
+ENV PATH="/usr/local/miniconda/bin:${PATH}"
+
+# Verify Conda installation
+RUN conda --version
+
 # Set up the working directory
 WORKDIR /workspace
 
