@@ -37,5 +37,8 @@ RUN chmod +x /scripts/*
 # Install Sedge
 RUN ./scripts/install-sedge.sh
 
+# Install python libraries
+RUN conda env create -f environment.yml
+
 # Specify the run-sedge.sh as the start script
 ENTRYPOINT ["./scripts/run-sedge.sh"]
