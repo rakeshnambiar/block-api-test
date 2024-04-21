@@ -53,5 +53,5 @@ RUN ./scripts/install-sedge.sh
 RUN conda env create -f environment.yml
 
 # Start Docker service
-CMD source /usr/local/miniconda/etc/profile.d/conda.sh && conda activate apitest && ./scripts/run-sedge.sh
+CMD conda init && conda activate apitest && ./scripts/run-sedge.sh
 
