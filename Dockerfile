@@ -13,7 +13,7 @@ RUN curl -O https://dl.google.com/go/go1.16.12.linux-amd64.tar.gz && \
 ENV PATH="/usr/local/go/bin:${PATH}"
 ENV GOPATH="/go"
 RUN go version
-RUN go mod download github.com/distribution/distribution/v3
+# RUN go mod download github.com/distribution/distribution/v3
 
 # Install Python 3.10
 RUN apt-get install -y python3.10 python3-pip && \
