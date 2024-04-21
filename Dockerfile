@@ -32,7 +32,7 @@ WORKDIR /workspace
 COPY . .
 
 # Make the script executable
-RUN chmod +x /scripts/*
+RUN chmod +x scripts/*
 
 # Install Sedge
 RUN ./scripts/install-sedge.sh
