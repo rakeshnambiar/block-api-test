@@ -7,3 +7,4 @@ dependencies:
   - requests=2.31.0
   - locust=2.26.0
   - pytest=8.1.1
+  - pytest-html==4.1.1

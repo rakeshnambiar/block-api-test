@@ -5,9 +5,6 @@ on: [push, pull_request]
 jobs:
   test:
     name: Run tests
-    container:
-      image: docker:20.10.12
-      options: --privileged  # Allow Docker commands to interact with the host's Docker daemon
     runs-on: ubuntu-latest
 
     steps:
@@ -27,7 +24,10 @@ jobs:
 
     - name: Run tests in Docker container
       run: |
-        docker run -v /var/run/docker.sock:/var/run/docker.sock sedge-api-test /bin/bash -c "source /usr/local/miniconda/etc/profile.d/conda.sh && conda activate apitest && conda env list && python -m pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html --tracing on"
+        source /usr/local/miniconda/etc/profile.d/conda.sh
+        conda activate apitest
+        conda env list
+        docker run sedge-api-test python -m pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html
 
     - name: Run Locust tests in Docker container
       run: |
