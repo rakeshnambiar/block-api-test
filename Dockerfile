@@ -61,8 +61,5 @@ RUN ./scripts/install-sedge.sh
 # Install python libraries
 RUN conda env create -f environment.yml
 
-# Initialize conda and activate environment
-RUN /bin/bash -c "source /usr/local/miniconda/etc/profile.d/conda.sh && conda activate apitest"
-
-# Specify the start script
-ENTRYPOINT ["./scripts/run-sedge.sh"]
+# Start Docker service
+CMD service docker start && ./scripts/run-sedge.sh
