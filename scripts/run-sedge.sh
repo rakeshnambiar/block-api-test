@@ -1,11 +1,18 @@
 #!/bin/bash
-
-sudo service docker start
-sudo docker info
-until sudo docker info > /dev/null 2>&1; do
-    echo "waiting for docker up and running in the loop"
+max_attempts=30
+count=0
+until sudo docker info > /dev/null 2>&1 || [ $count -eq $max_attempts ]; do
+    echo "Waiting for Docker to be up and running in the loop (Attempt $((count+1)) of $max_attempts)"
     sleep 1
+    ((count++))
 done
+
+if sudo docker info > /dev/null 2>&1; then
+    echo "Docker is up and running"
+else
+    echo "Docker did not start after $max_attempts attempts"
+    exit 1
+fi
 
 cd src/build
 
