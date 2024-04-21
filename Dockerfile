@@ -59,9 +59,8 @@ RUN ./scripts/install-sedge.sh
 # Install python libraries
 RUN conda env create -f environment.yml
 
-# Setup conda environment
-RUN conda init bash
-RUN conda activate apitest
+# Initialize conda and activate environment
+RUN conda init bash && conda activate apitest
 
 # Specify the start script
 ENTRYPOINT ["./scripts/run-sedge.sh"]
