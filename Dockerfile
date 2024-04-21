@@ -7,9 +7,8 @@ RUN apt-get update && \
 # Install Go
 RUN curl -O https://dl.google.com/go/go1.16.12.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.16.12.linux-amd64.tar.gz && \
-    rm go1.16.12.linux-amd64.tar.gz $$ \
-    export PATH=$PATH:/usr/local/go/bin
-# RUN go mod download github.com/distribution/distribution/v3
+    rm go1.16.12.linux-amd64.tar.gz
+ENV PATH="${PATH}:/usr/local/go/bin"
 
 # Set Go environment variables
 ENV PATH="/usr/local/go/bin:${PATH}"
