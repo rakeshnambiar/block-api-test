@@ -17,6 +17,8 @@ jobs:
     - name: Build Docker image
       run: |
         docker buildx build --push --tag ghcr.io/${{ github.actor }}/sedge-api-test:latest .
+      env:
+        GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
 
   test:
     name: Run tests
@@ -33,7 +35,6 @@ jobs:
 
     - name: Test in Docker container
       run: |
-        echo "running test"
         service docker start
         conda init
         conda activate apitest
