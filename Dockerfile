@@ -68,5 +68,11 @@ RUN ./scripts/install-sedge.sh
 # Install python libraries
 RUN conda env create -f environment.yml
 
+# Start Docker service
+CMD systemctl start docker && /bin/bash
+
+# Set conda on the start
+CMD conda activate apitest
+
 # Specify the run-sedge.sh as the start script
 ENTRYPOINT ["./scripts/run-sedge.sh"]
