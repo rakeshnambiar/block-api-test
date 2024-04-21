@@ -2,7 +2,22 @@
 FROM ubuntu:latest
 
 RUN apt-get update && \
-    apt-get install -y curl git
+    apt-get install -y curl git apt-transport-https ca-certificates curl software-properties-common
+
+# Add Docker official GPG key
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+# Add Docker repository
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+# Install Docker
+RUN apt-get update && \
+    apt-get install -y docker-ce docker-ce-cli containerd.io
+
+# Install any additional dependencies needed for your software
+
+# Set up Docker-in-Docker
+RUN mkdir -p /var/run/docker.sock
 
 # Install Go
 RUN curl -O https://dl.google.com/go/go1.22.2.linux-amd64.tar.gz && \
