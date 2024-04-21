@@ -31,6 +31,9 @@ RUN curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.s
     /usr/local/miniconda/bin/conda init && \
     /usr/local/miniconda/bin/conda install -y conda
 
+# Install Docker
+RUN apt-get update && apt-get install -y docker.io
+
 # Set environment variables
 ENV PATH="/usr/local/miniconda/bin:${PATH}"
 
@@ -52,6 +55,5 @@ RUN ./scripts/install-sedge.sh
 # Install python libraries
 RUN conda env create -f environment.yml
 
-# Start Docker service
-# CMD conda init && conda activate apitest && ./scripts/run-sedge.sh
-
+# # Start Docker service and run the Sedge script
+# CMD service docker start && conda init && conda activate apitest && ./scripts/run-sedge.sh

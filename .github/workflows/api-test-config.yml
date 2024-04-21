@@ -7,46 +7,28 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
 
-    container:
-      image: docker:20.10.12
-      options: --privileged
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Cache Docker layers
-      uses: actions/cache@v2
-      with:
-        path: /var/lib/docker
-        key: ${{ runner.os }}-docker-${{ hashFiles('**/Dockerfile') }}
-        restore-keys: |
-          ${{ runner.os }}-docker-
-
     - name: Build Docker image
       run: docker build -t sedge-api-test .
 
-    - name: Run tests in Docker container
+    - name: Push Docker image
       run: |
-        docker run -v /var/run/docker.sock:/var/run/docker.sock sedge-api-test /bin/bash -c "./scripts/run-sedge.sh && source /usr/local/miniconda/etc/profile.d/conda.sh && conda activate apitest && python -m utils.healthcheck && pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html"
-    - name: Run Locust tests in Docker container
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push sedge-api-test
+
+    - name: Test in Docker container
+      container:
+        image: sedge-api-test:latest
+        options: --privileged
+
+      env:
+        ENV_NAME: apitest
+
       run: |
-        mkdir locust-report
-        docker run sedge-api-test locust --locustfile tests/performance/performance_test.py --headless --host=http://localhost:8545 --users 1 --spawn-rate 1 --run-time 1m --exit-code-on-error 1 --stop-timeout 30 --html locust-report/report.html --print-stats --csv locust-report/performancetest.csv --csv-full-history -L DEBUG --logfile locust-report/performancetest.log
-        ls -ltr
-
-    - name: Save reports
-      run: |
-        mkdir -p reports
-        cp -r pytest-report/ ./reports/pytest
-        cp -r locust-report/ ./reports/locust
-
-    - name: Deploy reports to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./reports
-
-    - name: Check test results
-      if: ${{ failure() }}
-      run: exit 1
+        service docker start
+        conda init
+        conda activate $ENV_NAME
+        ./scripts/run-sedge.sh
