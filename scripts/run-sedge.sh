@@ -1,5 +1,9 @@
 #!/bin/bash
 
+pwd
+ls -lr
+cd src/build
+
 echo 'Running sedge...'
 ./sedge deps install >> $HOME/sedge.logs
 ./sedge generate --logging none -p $HOME /
