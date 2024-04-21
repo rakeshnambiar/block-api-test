@@ -1,9 +1,7 @@
 #!/bin/bash
 
-dockerd & journalctl -u docker.service
-
-pwd
-ls -lr
+sudo systemctl restart docker
+systemctl status docker
 cd src/build
 
 echo 'Running sedge...'
