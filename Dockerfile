@@ -1,8 +1,9 @@
-# Use an Ubuntu base image
+# base image
 FROM ubuntu:latest
 
+# Install dependencies
 RUN apt-get update && \
-    apt-get install -y curl git apt-transport-https ca-certificates curl software-properties-common
+    apt-get install -y curl git apt-transport-https ca-certificates curl software-properties-common python3.10 python3-pip
 
 # Add Docker official GPG key
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
@@ -13,8 +14,6 @@ RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubunt
 # Install Docker
 RUN apt-get update && \
     apt-get install -y docker-ce docker-ce-cli containerd.io
-
-# Install any additional dependencies needed for your software
 
 # Set up Docker-in-Docker
 RUN mkdir -p /var/run/docker.sock
@@ -31,14 +30,6 @@ ENV GOPATH="/go"
 # Check Go version
 RUN go version
 ENV GO111MODULE=on
-
-# Download module dependencies
-# RUN go mod download github.com/distribution/distribution@latest
-
-# Install Python 3.10
-RUN apt-get install -y python3.10 python3-pip && \
-    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 && \
-    update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
 
 # Install Conda
 RUN curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
@@ -68,11 +59,8 @@ RUN ./scripts/install-sedge.sh
 # Install python libraries
 RUN conda env create -f environment.yml
 
-# Start Docker service
-CMD systemctl start docker && /bin/bash
+# Set conda environment
+RUN conda activate apitest
 
-# Set conda on the start
-CMD conda activate apitest
-
-# Specify the run-sedge.sh as the start script
+# Specify the start script
 ENTRYPOINT ["./scripts/run-sedge.sh"]
