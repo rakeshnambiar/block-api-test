@@ -1,6 +1,7 @@
 #!/bin/bash
 
-dockerd & /bin/bash
+dockerd & journalctl -u docker.service
+
 pwd
 ls -lr
 cd src/build
