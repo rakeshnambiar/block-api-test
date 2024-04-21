@@ -16,7 +16,7 @@ RUN go version
 ENV GO111MODULE=on
 
 # Download module dependencies
-RUN go mod download github.com/distribution/distribution/v3
+RUN go mod download github.com/distribution/distribution@latest
 
 # Install Python 3.10
 RUN apt-get install -y python3.10 python3-pip && \
