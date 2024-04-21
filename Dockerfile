@@ -18,6 +18,9 @@ RUN apt-get update && \
 # Set up Docker-in-Docker
 RUN mkdir -p /var/run/docker.sock
 
+# Increase the nofile limit
+RUN ulimit -n 65536
+
 # Install Go
 RUN curl -O https://dl.google.com/go/go1.22.2.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz && \
