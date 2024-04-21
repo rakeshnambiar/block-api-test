@@ -1,0 +1,40 @@
+name: Python Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build -t sedge-api-test .
+    
+    - name: Run tests in Docker container
+      run: docker run sedge-api-test python -m pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html --tracing on
+    
+    - name: Run Locust tests in Docker container
+      run: |
+        mkdir locust-report
+        docker run sedge-api-test locust --locustfile tests/performance/performance_test.py --headless --host=http://localhost:8545 --users 1 --spawn-rate 1 --run-time 1m --exit-code-on-error 1 --stop-timeout 30 --html locust-report/report.html --print-stats --csv locust-report/performancetest.csv --csv-full-history -L DEBUG --logfile locust-report/performancetest.log
+        ls -ltr
+
+    - name: Save reports
+      run: |
+        mkdir -p reports
+        cp -r pytest-report/ ./reports/pytest
+        cp -r locust-report/ ./reports/locust
+
+    - name: Deploy reports to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./reports
+
+    - name: Check test results
+      if: ${{ failure() }}
+      run: exit 1
