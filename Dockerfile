@@ -5,18 +5,20 @@ RUN apt-get update && \
     apt-get install -y curl git
 
 # Install Go
-RUN curl -O https://dl.google.com/go/go1.16.12.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.16.12.linux-amd64.tar.gz && \
-    rm go1.16.12.linux-amd64.tar.gz
+RUN curl -O https://dl.google.com/go/go1.22.2.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz && \
+    rm go1.22.2.linux-amd64.tar.gz
 
 # Set Go environment variables
 ENV PATH="/usr/local/go/bin:${PATH}"
 ENV GOPATH="/go"
+
+# Check Go version
 RUN go version
 ENV GO111MODULE=on
 
 # Download module dependencies
-RUN go mod download github.com/distribution/distribution@latest
+# RUN go mod download github.com/distribution/distribution@latest
 
 # Install Python 3.10
 RUN apt-get install -y python3.10 python3-pip && \
