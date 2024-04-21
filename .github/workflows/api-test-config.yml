@@ -16,7 +16,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker buildx build --push --tag ghcr.io/your-username/sedge-api-test:latest .
+        docker buildx build --push --tag ghcr.io/${{ github.actor }}/sedge-api-test:latest .
 
   test:
     name: Run tests
@@ -24,12 +24,12 @@ jobs:
     needs: build
 
     container:
-      image: ghcr.io/your-username/sedge-api-test:latest
+      image: ghcr.io/${{ github.actor }}/sedge-api-test:latest
       options: --privileged
 
     steps:
     - name: Pull Docker image
-      run: docker pull ghcr.io/your-username/sedge-api-test:latest
+      run: docker pull ghcr.io/${{ github.actor }}/sedge-api-test:latest
 
     - name: Test in Docker container
       run: |
