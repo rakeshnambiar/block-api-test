@@ -11,15 +11,6 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 # Add Docker repository
 RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-# Install Docker
-RUN apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io sudo
-
-# Set up Docker-in-Docker
-RUN mkdir -p /var/run/docker.sock
-
-# Increase the nofile limit
-RUN ulimit -n 65536
-
 # Install Go
 RUN curl -O https://dl.google.com/go/go1.22.2.linux-amd64.tar.gz && \
     tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz && \
@@ -62,5 +53,5 @@ RUN ./scripts/install-sedge.sh
 RUN conda env create -f environment.yml
 
 # Start Docker service
-CMD service docker start && source /usr/local/miniconda/etc/profile.d/conda.sh && conda activate apitest && ./scripts/run-sedge.sh
+CMD source /usr/local/miniconda/etc/profile.d/conda.sh && conda activate apitest && ./scripts/run-sedge.sh
 
