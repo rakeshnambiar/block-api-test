@@ -1,7 +1,12 @@
 #!/bin/bash
 
-sudo systemctl restart docker
-systemctl status docker
+sudo service docker start
+sudo docker info
+until sudo docker info > /dev/null 2>&1; do
+    echo "waiting for docker up and running in the loop"
+    sleep 1
+done
+
 cd src/build
 
 echo 'Running sedge...'
