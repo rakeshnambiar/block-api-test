@@ -1,5 +1,6 @@
 #!/bin/bash
 
+service docker start && /bin/bash
 pwd
 ls -lr
 cd src/build
