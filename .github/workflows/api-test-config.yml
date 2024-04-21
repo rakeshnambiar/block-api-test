@@ -33,6 +33,7 @@ jobs:
 
     - name: Test in Docker container
       run: |
+        echo "running test"
         service docker start
         conda init
         conda activate apitest
