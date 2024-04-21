@@ -24,8 +24,7 @@ jobs:
 
     - name: Run tests in Docker container
       run: |
-        docker run -v /var/run/docker.sock:/var/run/docker.sock sedge-api-test python -m pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html --tracing on
-
+        docker run -v /var/run/docker.sock:/var/run/docker.sock sedge-api-test /bin/bash -c "source /usr/local/miniconda/etc/profile.d/conda.sh && conda activate apitest && pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html --tracing on"
     - name: Run Locust tests in Docker container
       run: |
         mkdir locust-report
