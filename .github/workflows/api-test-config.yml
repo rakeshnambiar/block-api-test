@@ -1,10 +1,10 @@
-name: Python Test
+name: API Test Workflow
 
 on: [push, pull_request]
 
 jobs:
   build:
-    name: Build Docker image
+    name: Run API tests
     runs-on: ubuntu-latest
 
     steps:
@@ -16,3 +16,6 @@ jobs:
         docker info
         python --version
         conda --version
+        chmod +x scripts/*
+        ./scripts/install-sedge.sh
+        ./scripts.run-sedge.sh
