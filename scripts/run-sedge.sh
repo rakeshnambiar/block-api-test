@@ -28,7 +28,7 @@ max_attempts=3
 attempt=1
 
 while [ $attempt -le $max_attempts ]; do
-    response=$(curl -s http://localhost:8008)
+    response=$(curl -s http://localhost:8545)
     if [ -n "$response" ]; then
         echo "Successfully received response: $response"
         exit 0
