@@ -20,6 +20,7 @@ jobs:
     name: Build Docker image
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && (github.event_name != 'pull_request' || github.actor == 'your_username')
+    needs: login
 
     steps:
       - name: Checkout repository
