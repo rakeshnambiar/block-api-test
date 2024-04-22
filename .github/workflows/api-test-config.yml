@@ -26,10 +26,17 @@ jobs:
     - name: Create python virtual ENV
       run: |
         conda env create -f environment.yml
-        conda init && conda activate apitest
+        conda init bash
+        source ~/.bashrc
+        conda activate apitest      
 
     - name: Run Health check
-      run: python -m utils.healthcheck
+      run: |
+        conda activate apitest
+        python -m utils.healthcheck
 
     - name: Run Verification Tests
-      run: python -m pytest -m Regression tests/verification/verification_test.py -sv
+      run: |
+        conda activate apitest
+        python -m pytest -m Regression tests/verification/verification_test.py -sv
+
