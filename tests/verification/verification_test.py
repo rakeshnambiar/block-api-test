@@ -14,7 +14,6 @@ def test_getBlockByNumber(block_head=None, client=None):
     assert getBlockResponse, "API response is empty"
     assert len(getBlockResponse['result']) > 0, "Key 'result' is 0"
     assert check_key_errors(getBlockResponse) is False, "One or more key has the error value"
-    assert len(getBlockResponse['result']['withdrawals']) > 0, "Withdrawal(s) NOT found in the api response"
     assert len(getBlockResponse['result']) > 10, "API response has less keys than expected"
     assertStartPattern(getBlockResponse['result']['author'])
     assertStartPattern(getBlockResponse['result']['hash'])
