@@ -5,6 +5,10 @@ echo "Current directory:"
 cd $HOME
 pwd
 ls -ltr
+cd src/build
+cp sedge $HOME
+pwd
+ls -ltr
 
 echo 'Running sedge...'
 ./sedge generate --logging none \
