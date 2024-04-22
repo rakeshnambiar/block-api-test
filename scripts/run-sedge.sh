@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Home directory: $HOME"
-
+cd src/build
 echo 'Running sedge...'
 ./sedge generate --logging none \
   -p $HOME full-node \
