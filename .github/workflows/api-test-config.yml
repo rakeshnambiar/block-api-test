@@ -21,16 +21,35 @@ jobs:
       env:
         GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
 
+#  test:
+#    name: Run tests
+#    runs-on: ubuntu-latest
+#    needs: build
+#
+#    container:
+#      image: ghcr.io/${{ github.actor }}/sedge-api-test:latest
+#      options: --privileged
+#
+#    steps:
+#    - name: Pull Docker image
+#      run: docker pull ghcr.io/${{ github.actor }}/sedge-api-test:latest
+#
+#    - name: Test in Docker container
+#      run: |
+#        service docker start
+#        conda init
+#        conda activate apitest
+#        ./scripts/run-sedge.sh
+
   test:
     name: Run tests
     runs-on: ubuntu-latest
     needs: build
 
-    container:
-      image: ghcr.io/${{ github.actor }}/sedge-api-test:latest
-      options: --privileged
-
     steps:
+    - name: Docker login
+      run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
     - name: Pull Docker image
       run: docker pull ghcr.io/${{ github.actor }}/sedge-api-test:latest
 
