@@ -4,7 +4,7 @@ echo "Home directory: $HOME"
 cd src/build
 echo 'Running sedge...'
 ./sedge generate --logging none \
-  -p . full-node \
+  -p $PWD/src/build full-node \
   --map-all \
   --no-mev-boost \
   --no-validator \
@@ -15,7 +15,7 @@ echo 'Running sedge...'
   --el-extra-flag Sync.DownloadBodiesInFastSync=false \
   --el-extra-flag Sync.DownloadReceiptsInFastSync=false \
   --cl-extra-flag checkpoint-sync-url=http://139.144.26.89:4000/ \
-  >> $HOME/sedge.logs
+  >> $PWD/src/build/sedge.logs
 
 #echo "Current directory:${pwd}"
 #cp $HOME/docker-compose.yml .
