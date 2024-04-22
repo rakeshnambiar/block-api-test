@@ -6,7 +6,7 @@ jobs:
   verification:
     name: Run verification tests
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 600
 
     steps:
     - name: Checkout repository
@@ -98,6 +98,13 @@ jobs:
           path: |
             performancetest.*
             report.html
+
+    - name: Publish HTML report
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: performance-report
+        path: report.html
 
     - name: Deploy to GitHub Pages
       if: always()

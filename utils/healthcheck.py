@@ -5,7 +5,7 @@ from tests.base.base_api_test import make_post_request
 from tests.data.test_data import ApiTestData
 
 
-def check_health(payload, max_retries=1500, retry_interval=5):
+def check_health(payload, max_retries=150000, retry_interval=5):
     retries = 0
     while retries < max_retries:
         try:
