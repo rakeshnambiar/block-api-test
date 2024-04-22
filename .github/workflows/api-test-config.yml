@@ -3,9 +3,10 @@ name: API Test Workflow
 on: [push, pull_request]
 
 jobs:
-  build:
-    name: Run API tests
+  verification:
+    name: Run verification tests
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
     - name: Checkout repository
@@ -39,3 +40,36 @@ jobs:
         source venv/bin/activate
         python -m pytest -m Regression tests/verification/verification_test.py -sv
 
+  performance:
+    name: Run performance tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: check tools
+      run: |
+        docker info
+        python --version
+        conda --version  
+
+    - name: Install Python libraries
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt    
+
+    - name: Install and run sedge
+      run: |  
+        chmod +x scripts/*
+        ./scripts/install-sedge.sh
+        ./scripts/run-sedge.sh        
+
+    - name: Run performance Tests
+      run: |
+        source venv/bin/activate
+        locust --locustfile tests/performance/performance_test.py --headless --host=http://localhost:8545 \
+        --users 1 --spawn-rate 1 --run-time 1m --exit-code-on-error 1 --stop-timeout 30 --html report.html \
+        --print-stats --csv performancetest.csv --csv-full-history -L DEBUG --logfile performancetest.log
