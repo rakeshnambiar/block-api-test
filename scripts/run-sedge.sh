@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo "$HOME"
+echo "Home directory: $HOME"
+echo "Current directory:"
+cd $HOME
 pwd
 ls -ltr
 

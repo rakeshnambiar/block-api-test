@@ -6,4 +6,4 @@ echo "Sources downloaded."
 cd src
 echo "Building sedge..."
 make compile
-ls -ltr
+cp src/build/sedge $HOME
