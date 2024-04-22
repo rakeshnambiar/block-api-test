@@ -103,7 +103,7 @@ jobs:
       if: always()
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.GHCR_TOKEN }}
         publish_dir: .
         publish_branch: gh-pages
         keep_files: true
