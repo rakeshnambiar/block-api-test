@@ -1,8 +1,8 @@
 #!/bin/bash
 
+echo "$HOME"
 pwd
-cd src/build
-pwd
+ls -ltr
 
 echo 'Running sedge...'
 ./sedge generate --logging none \
