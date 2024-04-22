@@ -1,6 +1,8 @@
 #!/bin/bash
 
+pwd
 cd src/build
+pwd
 
 echo 'Running sedge...'
 ./sedge generate --logging none \
