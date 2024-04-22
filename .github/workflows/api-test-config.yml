@@ -26,6 +26,7 @@ jobs:
     - name: Create python virtual ENV
       run: |
         conda env create -n apitest -f environment.yml
+        eval "$(conda shell.bash hook)"
         conda activate apitest
 
     - name: Run Health check
