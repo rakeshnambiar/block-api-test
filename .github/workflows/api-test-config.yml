@@ -21,24 +21,20 @@ jobs:
       env:
         GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
 
-  test:
-    name: Run tests
-    container:
-      image: ghcr.io/${{ github.actor }}/sedge-api-test:latest
-    runs-on: ubuntu-latest
-    needs: build
+test:
+  name: Run tests
+  runs-on: ubuntu-latest
+  needs: build
 
-    steps:
-      - name: Docker login and pull image
-        run: |
-          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          docker pull ghcr.io/${{ github.actor }}/sedge-api-test:latest
+  steps:
+  - name: Docker login
+    run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Start Docker service and run tests
-        run: |
-          service docker start
-          ./scripts/run-sedge.sh
-          conda init
-          conda activate apitest
-          python -m utils.healthcheck
-          pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html --tracing on
+  - name: Pull Docker image
+    run: docker pull ghcr.io/${{ github.actor }}/sedge-api-test:latest
+
+  - name: Start Docker service and run tests in container
+    run: |
+      docker run --privileged -d --name test-container ghcr.io/${{ github.actor }}/sedge-api-test:latest service docker start && \
+      docker exec test-container /bin/bash -c "cd /workspace && ./scripts/run-sedge.sh && conda init && conda activate apitest && python -m utils.healthcheck && pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html --tracing on"
+
