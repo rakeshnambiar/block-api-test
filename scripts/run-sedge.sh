@@ -1,14 +1,6 @@
 #!/bin/bash
 
 echo "Home directory: $HOME"
-echo "Current directory:"
-cd $HOME
-pwd
-ls -ltr
-cd src/build
-cp sedge $HOME
-pwd
-ls -ltr
 
 echo 'Running sedge...'
 ./sedge generate --logging none \
@@ -24,6 +16,8 @@ echo 'Running sedge...'
   --el-extra-flag Sync.DownloadReceiptsInFastSync=false \
   --cl-extra-flag checkpoint-sync-url=http://139.144.26.89:4000/ \
   >> $HOME/sedge.logs
-  
+
+echo "Current directory:$pwd"
+ls -ltr
 ./sedge run -p . >> $HOME/sedge.logs
 curl http://localhost:8545/
