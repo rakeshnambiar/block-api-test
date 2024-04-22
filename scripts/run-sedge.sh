@@ -22,6 +22,5 @@ cat docker-compose.yml
 
 ./sedge run -p . >> $HOME/sedge.logs
 tail $PWD/sedge.logs
-sleep 10
 docker ps
 curl http://localhost:8008
