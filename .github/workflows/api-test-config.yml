@@ -16,6 +16,9 @@ jobs:
         docker info
         python --version
         conda --version
+
+    - name: Install and run sedge
+      run: |  
         chmod +x scripts/*
         ./scripts/install-sedge.sh
-        ./scripts.run-sedge.sh
+        ./scripts/run-sedge.sh
