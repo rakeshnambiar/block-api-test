@@ -9,7 +9,7 @@ def check_health(payload, max_retries=20, retry_interval=1):
     retries = 0
     while retries < max_retries:
         try:
-            response_data = make_post_request('/', payload)
+            response_data = make_post_request(ApiTestData.ETH_SYNC.payload)
             if response_data:
                 print('Response : ', response_data, flush=True)
                 if response_data['result'] is False:
