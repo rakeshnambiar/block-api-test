@@ -29,17 +29,16 @@ jobs:
     needs: build
 
     steps:
-    - name: Docker login
-      run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Docker login and pull image
+        run: |
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker pull ghcr.io/${{ github.actor }}/sedge-api-test:latest
 
-    - name: Pull Docker image
-      run: docker pull ghcr.io/${{ github.actor }}/sedge-api-test:latest
-
-    - name: Start Docker service and run tests
-      run: |
-        service docker start
-        ./scripts/run-sedge.sh
-        conda init
-        conda activate apitest
-        python -m utils.healthcheck
-        pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html --tracing on
+      - name: Start Docker service and run tests
+        run: |
+          service docker start
+          ./scripts/run-sedge.sh
+          conda init
+          conda activate apitest
+          python -m utils.healthcheck
+          pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html --tracing on
