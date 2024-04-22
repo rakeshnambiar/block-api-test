@@ -6,4 +6,6 @@ echo "Sources downloaded."
 cd src
 echo "Building sedge..."
 make compile
-cp src/build/sedge $HOME
+echo "Build directory"
+pwd
+cp ./src/build/sedge $HOME
