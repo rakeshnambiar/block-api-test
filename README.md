@@ -1,7 +1,8 @@
 ## Local set up
 - Set the environment variable like `eport host=http://localhost:8545`
 - Install Python 3:10
-- Install conda https://conda.io/projects/conda/en/latest/user-guide/install/index.html
+- Install pip if it's not installed already
+- Run `pip install -r requirements.txt` to install the dependencies
 
 ## What are all included
 - Functional or verification tests written in Pytest
