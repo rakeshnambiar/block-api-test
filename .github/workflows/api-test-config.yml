@@ -41,6 +41,7 @@ jobs:
         python -m pytest -m Regression tests/verification/verification_test.py -sv --html=html-report/index.html
 
     - name: Archive artifacts
+      if: always()
       uses: actions/upload-artifact@v2
       with:
           name: verification-test-artifact
@@ -49,6 +50,7 @@ jobs:
             html-report
 
     - name: Publish HTML report
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: verification-report
@@ -89,6 +91,7 @@ jobs:
         --print-stats --csv performancetest.csv --csv-full-history -L DEBUG --logfile performancetest.log
 
     - name: Archive artifacts
+      if: always()
       uses: actions/upload-artifact@v2
       with:
           name: performance-test-artifact
@@ -97,6 +100,7 @@ jobs:
             report.html
 
     - name: Publish HTML report
+      if: always()
       uses: actions/upload-artifact@v2
       with:
         name: performance-report
