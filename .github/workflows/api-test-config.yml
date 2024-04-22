@@ -23,17 +23,19 @@ jobs:
         ./scripts/install-sedge.sh
         ./scripts/run-sedge.sh
 
-    - name: Create conda environment
+    - name: Install Python libraries
       run: |
-        $CONDA/bin/conda init && $CONDA/bin/conda env create --file environment.yml --name apitest
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
 
     - name: Run Health check
       run: |
-        $CONDA/bin/conda activate apitest
+        source venv/bin/activate
         python -m utils.healthcheck
 
     - name: Run Verification Tests
       run: |
-        $CONDA/bin/conda activate apitest
+        source venv/bin/activate
         python -m pytest -m Regression tests/verification/verification_test.py -sv
 
