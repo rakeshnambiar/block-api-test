@@ -26,8 +26,7 @@ jobs:
     - name: Create python virtual ENV
       run: |
         conda env create -f environment.yml
-        conda init
-        conda activate apitest
+        conda init && conda activate apitest
 
     - name: Run Health check
       run: python -m utils.healthcheck
