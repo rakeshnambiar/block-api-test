@@ -23,19 +23,17 @@ jobs:
         ./scripts/install-sedge.sh
         ./scripts/run-sedge.sh
 
-    - name: Create python virtual ENV
+    - name: Create conda environment
       run: |
-        conda env create -n apitest -f environment.yml
-        echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc
-        conda activate apitest
+        $CONDA/bin/conda env create --file environment.yml --name apitest
 
     - name: Run Health check
       run: |
-        conda activate apitest
+        $CONDA/bin/conda activate apitest
         python -m utils.healthcheck
 
     - name: Run Verification Tests
       run: |
-        conda activate apitest
+        $CONDA/bin/conda activate apitest
         python -m pytest -m Regression tests/verification/verification_test.py -sv
 
