@@ -23,4 +23,21 @@ cat docker-compose.yml
 ./sedge run -p . >> $HOME/sedge.logs
 tail $PWD/sedge.logs
 docker ps
-curl http://localhost:8008
+
+max_attempts=3
+attempt=1
+
+while [ $attempt -le $max_attempts ]; do
+    response=$(curl -s http://localhost:8008)
+    if [ -n "$response" ]; then
+        echo "Successfully received response: $response"
+        exit 0
+    else
+        echo "Attempt $attempt: No response received, retrying..."
+        sleep 5
+        attempt=$((attempt + 1))
+    fi
+done
+
+echo "Max attempts reached, failed to receive response."
+exit 1
