@@ -2,15 +2,19 @@ name: API Test Workflow
 
 on: [push, pull_request]
 
+env:
+  PERFORMANCE_TEST_ENABLED: true
+  HOST_URL: http://localhost:8545
+
 jobs:
   verification:
     name: Run verification tests
     runs-on: ubuntu-latest
-    timeout-minutes: 600
+    timeout-minutes: 180
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: check tools
       run: |
@@ -38,11 +42,11 @@ jobs:
     - name: Run Verification Tests
       run: |
         source venv/bin/activate
-        python -m pytest -m Regression tests/verification/verification_test.py -sv --html=html-report/index.html
+        python -m pytest -m Regression tests/verification/verification_test.py --host=${{ env.HOST_URL }} -sv --html=html-report/index.html
 
     - name: Archive artifacts
       if: always()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
           name: verification-test-artifact
           path: |
@@ -51,7 +55,7 @@ jobs:
 
     - name: Publish HTML report
       if: always()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: verification-report
         path: html-report
@@ -59,11 +63,12 @@ jobs:
   performance:
     name: Run performance tests
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 180
+    if: ${{ env.PERFORMANCE_TEST_ENABLED == 'true' }}
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: check tools
       run: |
@@ -81,18 +86,23 @@ jobs:
       run: |  
         chmod +x scripts/*
         ./scripts/install-sedge.sh
-        ./scripts/run-sedge.sh        
+        ./scripts/run-sedge.sh       
+
+    - name: Run Health check
+      run: |
+        source venv/bin/activate
+        python -m utils.healthcheck        
 
     - name: Run performance Tests
       run: |
         source venv/bin/activate
-        locust --locustfile tests/performance/performance_test.py --headless --host=http://localhost:8545 \
-        --users 1 --spawn-rate 1 --run-time 1m --stop-timeout 30 --html report.html \
+        locust --locustfile tests/performance/performance_test.py --headless --host=${{ env.HOST_URL }} \
+        --users 100 --spawn-rate 1 --run-time 10m --stop-timeout 30 --html report.html \
         --print-stats --csv performancetest.csv --csv-full-history -L DEBUG --logfile performancetest.log
 
     - name: Archive artifacts
       if: always()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
           name: performance-test-artifact
           path: |
@@ -101,14 +111,14 @@ jobs:
 
     - name: Publish HTML report
       if: always()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: performance-report
         path: report.html
 
     - name: Deploy to GitHub Pages
       if: always()
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GHCR_TOKEN }}
         publish_dir: .
