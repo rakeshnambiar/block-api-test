@@ -1,0 +1,12 @@
+Count,Message,Traceback,Nodes
+14,'parentBeaconBlockRoot',"  File ""/home/runner/work/block-api-test/block-api-test/venv/lib/python3.10/site-packages/locust/user/task.py"", line 339, in run
+    self.execute_next_task()
+  File ""/home/runner/work/block-api-test/block-api-test/venv/lib/python3.10/site-packages/locust/user/task.py"", line 372, in execute_next_task
+    self.execute_task(self._task_queue.pop(0))
+  File ""/home/runner/work/block-api-test/block-api-test/venv/lib/python3.10/site-packages/locust/user/task.py"", line 489, in execute_task
+    task(self.user)
+  File ""/home/runner/work/block-api-test/block-api-test/tests/performance/performance_test.py"", line 21, in benchmarkGetBlockByNumber
+    test_getBlockByNumber(self.head, self.client)
+  File ""/home/runner/work/block-api-test/block-api-test/tests/verification/verification_test.py"", line 20, in test_getBlockByNumber
+    assertStartPattern(getBlockResponse['result']['parentBeaconBlockRoot'])
+",local
