@@ -24,7 +24,7 @@ cat docker-compose.yml
 tail $PWD/sedge.logs
 docker ps
 
-max_attempts=3
+max_attempts=10
 attempt=1
 
 while [ $attempt -le $max_attempts ]; do

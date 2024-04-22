@@ -22,3 +22,15 @@ jobs:
         chmod +x scripts/*
         ./scripts/install-sedge.sh
         ./scripts/run-sedge.sh
+
+    - name: Create python virtual ENV
+      run: |
+        conda env create -f environment.yml
+        conda init
+        conda activate apitest
+
+    - name: Run Health check
+      run: python -m utils.healthcheck
+
+    - name: Run Verification Tests
+      run: python -m pytest -m Regression tests/verification/verification_test.py -sv
