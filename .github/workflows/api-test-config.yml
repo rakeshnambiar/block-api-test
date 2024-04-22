@@ -35,6 +35,11 @@ jobs:
 
     - name: Start Docker service and run tests in container
       run: |
-        docker run --privileged -d --name test-container ghcr.io/${{ github.actor }}/sedge-api-test:latest sh -c "service docker start && cd /workspace && ./scripts/run-sedge.sh && conda init && conda activate apitest && python -m utils.healthcheck && pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html"
+       docker run --privileged -d --name test-container ghcr.io/rakeshnambiar/sedge-api-test:latest sh -c "service docker start && cd /workspace && ./scripts/run-sedge.sh && source $CONDA_PROFILE && conda activate $CONDA_ENV && python -m utils.healthcheck && pytest -m Regression tests/verification/verification_test.py -sv --html=pytest-report/index.html --tracing on"
+    env:
+       CONDA_PROFILE: "/usr/local/miniconda/etc/profile.d/conda.sh"
+       CONDA_ENV: "apitest"
+
+
 
 
