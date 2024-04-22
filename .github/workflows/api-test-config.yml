@@ -38,7 +38,21 @@ jobs:
     - name: Run Verification Tests
       run: |
         source venv/bin/activate
-        python -m pytest -m Regression tests/verification/verification_test.py -sv
+        python -m pytest -m Regression tests/verification/verification_test.py -sv --html=html-report/index.html
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+          name: verification-test-artifact
+          path: |
+            execution.log
+            html-report
+
+    - name: Publish HTML report
+      uses: actions/upload-artifact@v2
+      with:
+        name: verification-report
+        path: html-report
 
   performance:
     name: Run performance tests
@@ -73,3 +87,17 @@ jobs:
         locust --locustfile tests/performance/performance_test.py --headless --host=http://localhost:8545 \
         --users 1 --spawn-rate 1 --run-time 1m --stop-timeout 30 --html report.html \
         --print-stats --csv performancetest.csv --csv-full-history -L DEBUG --logfile performancetest.log
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+          name: performance-test-artifact
+          path: |
+            performancetest.*
+            report.html
+
+    - name: Publish HTML report
+      uses: actions/upload-artifact@v2
+      with:
+        name: performance-report
+        path: report.html
