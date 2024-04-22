@@ -5,7 +5,7 @@ from tests.base.base_api_test import make_post_request
 from tests.data.test_data import ApiTestData
 
 
-def check_health(payload, max_retries=20, retry_interval=1):
+def check_health(payload, max_retries=100, retry_interval=2):
     retries = 0
     while retries < max_retries:
         try:
@@ -20,7 +20,7 @@ def check_health(payload, max_retries=20, retry_interval=1):
             logger.error("Unexpected Error:", e)
         retries += 1
         time.sleep(retry_interval)
-        print(f'Retrying the health check - {retries}')
+        print(f'Retrying the health check - {retries}', flush=True)
     return False
 
 
