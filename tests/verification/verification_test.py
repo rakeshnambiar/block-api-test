@@ -24,6 +24,7 @@ def test_getBlockByNumber(block_head=None, client=None):
 def test_getBlockByHash(block_head=None, client=None):
     if block_head is None:
         block_head = getBlockHead(client)
+    assert block_head != '0x0', 'Assertion Error: Unexpected Block Head 0x0'
     block_hash = getBlockHash(block_head, client)
     getBlockReceiptPayload = ApiTestData.GET_BLOCK_BY_HASH.payload
     getBlockReceiptPayload['params'] = [block_hash]
