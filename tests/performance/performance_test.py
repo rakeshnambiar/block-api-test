@@ -14,12 +14,11 @@ class PerformanceTests(HttpUser):
     def on_start(self):
         if not self.initialized:
             self.head = getBlockHead(self.client)
-            print(f'Block head using by the test --> {self.head}')
+            print(f'Block head using by the test --> {self.head}', flush=True)
             if self.head == '0x0':
                 print(f'Retrying as the Head did not fetched first time', flush=True)
                 time.sleep(1)
                 self.head = getBlockHead(self.client)
-            self.head = '0x0'
             if self.head == '0x0':
                 sys.exit("Test terminated due to unexpected head -> 0x0")
 
@@ -38,22 +37,24 @@ class StagesShape(LoadTestShape):
     stages = [
         ##  duration is in seconds
 
+        ## Scenario#5 CI test
         {"duration": 15, "users": 25, "spawn_rate": 5},
         {"duration": 30, "users": 50, "spawn_rate": 10},
         {"duration": 45, "users": 100, "spawn_rate": 20},
         {"duration": 60, "users": 200, "spawn_rate": 25},
         {"duration": 75, "users": 500, "spawn_rate": 50},
-
         ## Ramp-down part
         {"duration": 180, "users": 200, "spawn_rate": 25},
         {"duration": 210, "users": 50, "spawn_rate": 25},
         {"duration": 240, "users": 10, "spawn_rate": 5}
-
-        ## requests count strctly between 1K to 10K
+        #
+        # # Scenario#4 requests count strictly between 1K to 10K
         # {"duration": 60, "users": 25, "spawn_rate": 5},
         # {"duration": 90, "users": 50, "spawn_rate": 10},
         # {"duration": 120, "users": 100, "spawn_rate": 20},
-        # {"duration": 150, "users": 200, "spawn_rate": 25},
+        # {"duration": 150, "users": 150, "spawn_rate": 25},
+
+
     ]
 
     def tick(self):
