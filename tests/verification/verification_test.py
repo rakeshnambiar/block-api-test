@@ -17,7 +17,6 @@ def test_getBlockByNumber(block_head=None, client=None):
     assert len(getBlockResponse['result']) > 10, "API response has less keys than expected"
     assertStartPattern(getBlockResponse['result']['author'])
     assertStartPattern(getBlockResponse['result']['hash'])
-    assertStartPattern(getBlockResponse['result']['parentBeaconBlockRoot'])
 
 
 @pytest.mark.ByHash

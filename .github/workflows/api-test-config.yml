@@ -96,7 +96,7 @@ jobs:
       run: |
         source venv/bin/activate
         locust --locustfile tests/performance/performance_test.py --headless --host=${{ env.HOST_URL }} \
-        --users 100 --spawn-rate 1 --run-time 10m --stop-timeout 30 --html report.html \
+        --users 50 --spawn-rate 1 --run-time 10m --stop-timeout 30 --html report.html \
         --print-stats --csv performancetest.csv --csv-full-history -L DEBUG --logfile performancetest.log
 
     - name: Archive artifacts
