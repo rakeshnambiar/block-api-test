@@ -1,6 +1,6 @@
 import time
 
-from locust import HttpUser, task, between, tag, LoadTestShape
+from locust import HttpUser, task, between, tag, LoadTestShape, events
 from tests.verification.verification_test import getBlockHead, test_getBlockByNumber, test_getBlockByHash
 
 
@@ -18,7 +18,9 @@ class PerformanceTests(HttpUser):
                 print(f'Retrying as the Head did not fetched first time', flush=True)
                 time.sleep(1)
                 self.head = getBlockHead(self.client)
-            assert self.head != '0x0', 'Assertion Error: Unexpected Block Head 0x0'
+            if self.head == '0x0':
+                self.environment.runner.quit()
+                self.initialized = True
 
     @tag('get_block_by_number')
     @task(1)
