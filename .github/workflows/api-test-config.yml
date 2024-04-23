@@ -2,6 +2,9 @@ name: API Test Workflow
 
 on: [push, pull_request]
 
+env:
+  HOST_URL: http://localhost:8545
+
 jobs:
   verification:
     name: Run verification tests
@@ -38,6 +41,7 @@ jobs:
     - name: Run Verification Tests
       run: |
         source venv/bin/activate
+        export host=${{ env.HOST_URL }}
         python -m pytest -m Regression tests/verification/verification_test.py -sv --html=html-report/index.html
 
     - name: Archive artifacts
