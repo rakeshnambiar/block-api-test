@@ -14,8 +14,8 @@
 - To run a specific test you can use the command `python -m pytest -m ByHash tests/verification/verification_test.py -sv`
 
 ## How to run the Performance tests
-- To run all the test use the command `locust --locustfile tests/performance/performance_test.py --headless --host=http://localhost:8545 --users 1 --spawn-rate 1 --run-time 1m --exit-code-on-error 1 --stop-timeout 30 --html report.html --print-stats --csv performancetest.csv --csv-full-history -L DEBUG --logfile performancetest.log`
-- To run a specific performance test, use the command `locust --locustfile tests/performance/performance_test.py --headless --host=http://localhost:8545 --users 1 --spawn-rate 1 --run-time 1m --exit-code-on-error 1 --stop-timeout 30 --tags get_block_by_number --html report.html --print-stats --csv getBlockNumber.csv --csv-full-history -L DEBUG --logfile performancetest.log`
+- To run all the test use the command `locust --locustfile tests/performance/performance_test.py --headless --host=http://localhost:8545 --stop-timeout 30 --html report.html --print-stats --csv performancetest.csv --csv-full-history -L DEBUG --logfile performancetest.log`
+- To run a specific performance test, use the command `locust --locustfile tests/performance/performance_test.py --headless --host=http://localhost:8545 --spawn-rate 1 --stop-timeout 30 --tags get_block_by_number --html report.html --print-stats --csv getBlockNumber.csv --csv-full-history -L DEBUG --logfile performancetest.log`
 
 ## How to run Healthcheck locally
 - Use the command `python -m utils.healthcheck`

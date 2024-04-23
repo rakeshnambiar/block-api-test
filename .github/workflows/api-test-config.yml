@@ -96,8 +96,11 @@ jobs:
       run: |
         source venv/bin/activate
         locust --locustfile tests/performance/performance_test.py --headless --host=${{ env.HOST_URL }} \
-        --users 50 --spawn-rate 1 --run-time 10m --stop-timeout 30 --html report.html \
-        --print-stats --csv performancetest.csv --csv-full-history -L DEBUG --logfile performancetest.log
+        --tags get_block_by_number --stop-timeout 30 --html report_batch1.html \
+        --print-stats --csv performancetest_batch1.csv --csv-full-history -L DEBUG --logfile performancetest_batch1.log
+        locust --locustfile tests/performance/performance_test.py --headless --host=${{ env.HOST_URL }} \
+        --tags get_block_by_hash --stop-timeout 30 --html report_batch2.html \
+        --print-stats --csv performancetest_batch2.csv --csv-full-history -L DEBUG --logfile performancetest_batch2.log
 
     - name: Archive artifacts
       if: always()
@@ -105,12 +108,15 @@ jobs:
       with:
           name: performance-test-artifact
           path: |
-            performancetest.*
-            report.html
+            performancetest_*
+            report_batch1.html
+            report_batch2.html
 
     - name: Publish HTML report
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: performance-report
-        path: report.html
+        path: |
+          report_batch1.html
+          report_batch2.html
