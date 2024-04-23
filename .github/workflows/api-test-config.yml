@@ -2,10 +2,6 @@ name: API Test Workflow
 
 on: [push, pull_request]
 
-env:
-  PERFORMANCE_TEST_ENABLED: true
-  HOST_URL: http://localhost:8545
-
 jobs:
   verification:
     name: Run verification tests
@@ -42,7 +38,7 @@ jobs:
     - name: Run Verification Tests
       run: |
         source venv/bin/activate
-        python -m pytest -m Regression tests/verification/verification_test.py --host=${{ env.HOST_URL }} -sv --html=html-report/index.html
+        python -m pytest -m Regression tests/verification/verification_test.py -sv --html=html-report/index.html
 
     - name: Archive artifacts
       if: always()
@@ -114,13 +110,3 @@ jobs:
       with:
         name: performance-report
         path: report.html
-
-    - name: Deploy to GitHub Pages
-      if: always()
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GHCR_TOKEN }}
-        publish_dir: .
-        publish_branch: gh-pages
-        keep_files: true
-        allow_empty_commit: true
