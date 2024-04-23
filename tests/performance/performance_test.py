@@ -1,3 +1,4 @@
+import sys
 import time
 
 from locust import HttpUser, task, between, tag, LoadTestShape, events
@@ -18,12 +19,9 @@ class PerformanceTests(HttpUser):
                 print(f'Retrying as the Head did not fetched first time', flush=True)
                 time.sleep(1)
                 self.head = getBlockHead(self.client)
-
+            self.head = '0x0'
             if self.head == '0x0':
-                self.environment.runner.quit()
-                self.initialized = True
-                raise Exception("Test terminated due to condition")
-
+                sys.exit("Test terminated due to unexpected head -> 0x0")
 
     @tag('get_block_by_number')
     @task(1)
