@@ -38,8 +38,12 @@
 - Condition performance testing based on some flags. It is easy in GitLab CI but it didn't work for me with IF condition
 - The sedge node sync time is dynamic. Sometime it will finish soon and sometimes it can take more than an hour which is a pain in the CI/CD environment. 
   Once know the technical background seek for some caching or something to cut down this time. I tried with snapshot sync and fast sync options but that didn't help.
+- Publish the reports on GitHub pages and have a custom index.html which links to Verification and Performance reports
+- It's the first time I am using GitHub workflow and I am much more comfortable with GitLab CI config. There maybe some room to avoid the duplicate steps and improvement
+- Also for locust as I am using it first time
 
 ## Issues noticed
 - Random node syncing
 - Sometimes the syncing says its finished. But while getting the block head using `eth_blockNumber` returns:
   `{'jsonrpc': '2.0', 'result': '0x0', 'id': 0}`
+- Threshold based performance verification is not supported by locust I think https://github.com/locustio/locust/issues/2668

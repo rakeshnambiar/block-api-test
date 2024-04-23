@@ -18,9 +18,12 @@ class PerformanceTests(HttpUser):
                 print(f'Retrying as the Head did not fetched first time', flush=True)
                 time.sleep(1)
                 self.head = getBlockHead(self.client)
+
             if self.head == '0x0':
                 self.environment.runner.quit()
                 self.initialized = True
+                raise Exception("Test terminated due to condition")
+
 
     @tag('get_block_by_number')
     @task(1)
