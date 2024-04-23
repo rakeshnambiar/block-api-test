@@ -15,8 +15,6 @@ echo 'Running sedge...'
   --el-extra-flag Sync.DownloadBodiesInFastSync=false \
   --el-extra-flag Sync.DownloadReceiptsInFastSync=false \
   --cl-extra-flag checkpoint-sync-url=http://139.144.26.89:4000/ \
-  --el-extra-flag Sync.SnapSync=true \
-  --el-extra-flag Sync.FastSync=true \
   >> $PWD/sedge.logs
 
 echo "Docker compose file:"
